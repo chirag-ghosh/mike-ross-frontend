@@ -60,7 +60,7 @@ const mockdata = [
 ];
 
 export function NavbarMinimal() {
-  const [active, setActive] = useState(2);
+  const [active, setActive] = useState(0);
 
   const navigate = useNavigate();
   const {toggleColorMode} = useThemeContext();
