@@ -2,6 +2,7 @@ import { MantineProvider } from "@mantine/core";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./components/Home";
 import { NavbarMinimal } from "./components/NavbarMinimal";
+import Schedule from "./components/Schedule";
 import { useThemeContext } from "./hooks/useThemeContext";
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
             <Routes>
               <Route index element={<Home />} />
               <Route path="home" element={<Home />} />
+              <Route path="schedule" element={<Schedule />} />
             </Routes>
           </div>
         </div>
