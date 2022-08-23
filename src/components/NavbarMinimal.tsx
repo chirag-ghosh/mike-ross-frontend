@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Navbar, Tooltip, UnstyledButton, createStyles, Stack } from '@mantine/core';
 import {
   TablerIcon,
@@ -8,7 +8,7 @@ import {
   IconSwitchHorizontal,
   IconSearch,
 } from '@tabler/icons';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useThemeContext } from '../hooks/useThemeContext';
 
 const useStyles = createStyles((theme) => ({
@@ -63,19 +63,26 @@ export function NavbarMinimal() {
   const [active, setActive] = useState(0);
 
   const navigate = useNavigate();
+  const location = useLocation();
   const {toggleColorMode} = useThemeContext();
 
-  const setActiveTab = (index: number, label: string) => {
-    setActive(index)
-    navigate(`/${label.toLowerCase()}`)
-  }
+  useEffect(() => {
+    const initRoute = location.pathname.split('/')[1]
+    if(initRoute === '') {
+      setActive(0)
+      return
+    }
+    mockdata.forEach((links, index) => {
+      if(links.label.toLowerCase() === initRoute) setActive(index)
+    })
+  }, [location.pathname])
 
   const links = mockdata.map((link, index) => (
     <NavbarLink
       {...link}
       key={link.label}
       active={index === active}
-      onClick={() => setActiveTab(index, link.label)}
+      onClick={() => navigate(`/${link.label.toLowerCase()}`)}
     />
   ));
 
