@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./components/Home";
 import { NavbarMinimal } from "./components/NavbarMinimal";
 import Schedule from "./components/Schedule";
+import Search from "./components/Search";
 import { useThemeContext } from "./hooks/useThemeContext";
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
               <Route index element={<Home />} />
               <Route path="home" element={<Home />} />
               <Route path="schedule" element={<Schedule />} />
+              <Route path="search" element={<Search />} />
             </Routes>
           </div>
         </div>
