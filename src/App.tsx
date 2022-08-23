@@ -1,25 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { MantineProvider } from "@mantine/core";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Home from "./components/Home";
+import { NavbarMinimal } from "./components/NavbarMinimal";
+import { useThemeContext } from "./hooks/useThemeContext";
 
 function App() {
+  const {colorMode} = useThemeContext()
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <MantineProvider theme={{colorScheme: colorMode}}>
+      <BrowserRouter>
+        <div className="layout">
+          <NavbarMinimal />
+          <div className={`main-area ${colorMode}`}>
+            <Routes>
+              <Route index element={<Home />} />
+              <Route path="home" element={<Home />} />
+            </Routes>
+          </div>
+        </div>
+      </BrowserRouter>
+    </MantineProvider>
   );
 }
 
