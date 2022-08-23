@@ -84,7 +84,7 @@ function Schedule() {
             <div className="case-list">
                 <h2>Hearings on: {moment(date).format("DD-MM-YYYY")}</h2>
                 <ScrollArea>
-                    {cases.map((caseDetail) => <CaseItem caseDetails={caseDetail} key={caseDetail.hash} />)}
+                    {cases.map((caseDetail) => <CaseItem caseDetails={caseDetail} key={caseDetail._id} />)}
                 </ScrollArea>
             </div>    
         </div>
