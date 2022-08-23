@@ -7,7 +7,7 @@ import { useThemeContext } from "./hooks/useThemeContext";
 function App() {
   const {colorMode} = useThemeContext()
   return (
-    <MantineProvider theme={{colorScheme: colorMode}}>
+    <MantineProvider theme={{colorScheme: colorMode, fontFamily: 'Poppins, sans serif'}}>
       <BrowserRouter>
         <div className="layout">
           <NavbarMinimal />
