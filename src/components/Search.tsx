@@ -1,18 +1,9 @@
 import { Card, createStyles, ScrollArea, TextInput } from "@mantine/core"
 import { IconSearch } from "@tabler/icons"
 import axios from "axios";
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { BACKEND_URL } from "../constants";
-
-export const debounce = (callback: Function, wait = 300) => {
-    let timeoutId: ReturnType<typeof setTimeout>;
-    console.log("2")
-
-    return function debouncer(this: any, ...args: any[]) {
-        clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => callback.apply(this, args), wait);
-    };
-};
+import debounce from "../utils/debounce";
 
 const useStyles = createStyles((theme) => ({
     id: {
@@ -52,10 +43,12 @@ function Search() {
         fetchCases(query)
     }, [query])
 
+    const handleChange = debounce((e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value))
+
     return(
         <div className="search">
             <h2>Legal Case Searcher</h2>
-            <TextInput className="search-input" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="start typing here" icon={<IconSearch />} />
+            <TextInput className="search-input" value={query} onChange={handleChange} placeholder="start typing here" icon={<IconSearch />} />
             <div className="search-case-list">
                 <ScrollArea>
                     {cases.map((caseDetails) => <CaseItem caseDetails={caseDetails} key={caseDetails._id} />)}
