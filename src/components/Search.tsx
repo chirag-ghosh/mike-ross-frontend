@@ -48,7 +48,7 @@ function Search() {
     return(
         <div className="search">
             <h2>Legal Case Searcher</h2>
-            <TextInput className="search-input" value={query} onChange={handleChange} placeholder="start typing here" icon={<IconSearch />} />
+            <TextInput className="search-input" onChange={handleChange} placeholder="start typing here" icon={<IconSearch />} />
             <div className="search-case-list">
                 <ScrollArea>
                     {cases.map((caseDetails) => <CaseItem caseDetails={caseDetails} key={caseDetails._id} />)}
