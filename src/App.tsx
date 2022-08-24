@@ -1,5 +1,6 @@
 import { MantineProvider } from "@mantine/core";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import CasePage from "./components/CasePage";
 import Home from "./components/Home";
 import { NavbarMinimal } from "./components/NavbarMinimal";
 import Schedule from "./components/Schedule";
@@ -18,7 +19,10 @@ function App() {
               <Route index element={<Home />} />
               <Route path="home" element={<Home />} />
               <Route path="schedule" element={<Schedule />} />
-              <Route path="search" element={<Search />} />
+              <Route path="search">
+                <Route index element={<Search />} />
+                <Route path=":hash" element={<CasePage />} />
+              </Route>
             </Routes>
           </div>
         </div>

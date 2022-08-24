@@ -2,6 +2,7 @@ import { Card, createStyles, ScrollArea, TextInput } from "@mantine/core"
 import { IconSearch } from "@tabler/icons"
 import axios from "axios";
 import React, { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "../constants";
 import debounce from "../utils/debounce";
 
@@ -18,9 +19,10 @@ const useStyles = createStyles((theme) => ({
 function CaseItem({caseDetails}: {caseDetails: any}) {
 
     const {classes, cx} = useStyles();
+    const navigate = useNavigate();
 
     return(
-        <Card withBorder radius="md" className="case-item">
+        <Card withBorder radius="md" className="case-item" onClick={() => navigate(caseDetails.hash)}>
             <div className={cx(classes.id)}>#{caseDetails.diary_number}</div>
             <div className={cx(classes.title)}>{caseDetails.petitioners[0]}</div>
             <div>{caseDetails.category}</div>
