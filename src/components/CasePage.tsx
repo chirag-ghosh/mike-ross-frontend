@@ -1,8 +1,10 @@
-import { ScrollArea } from "@mantine/core"
+import { Badge, ScrollArea } from "@mantine/core"
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { BACKEND_URL } from "../constants"
+import findRole from "../utils/findRole"
+import CaseTimeline from "./CaseTimeline"
 import ListingTable from "./ListingTable"
 
 function CasePage() {
@@ -26,11 +28,27 @@ function CasePage() {
                 <div className="section">
                     <div className="sub-section">
                         <div className="label">Diary Number</div>
-                        <div className="data">{caseDetails.diary_number}</div>
+                        <div className="data"><Badge color='red' radius='sm' size="xl">{caseDetails.diary_number}</Badge></div>
                     </div>
                     <div className="sub-section">
                         <div className="label">Category</div>
-                        <div className="data">{caseDetails.category}</div>
+                        <div className="data"><Badge radius='sm' size="xl">{caseDetails.category}</Badge></div>
+                    </div>
+                </div>
+                <div className="section">
+                    <div className="sub-section">
+                        <div className="label">Role of UGC</div>
+                        <div className="data"><Badge color='green' radius='sm' size="xl">{findRole(caseDetails.petitioner)}</Badge></div>
+                    </div>
+                    <div className="sub-section">
+                        <div className="label">Case Status</div>
+                        <div className="data"><Badge color='yellow' radius='sm' size="xl">{caseDetails.status.split(' ')[0]}</Badge></div>
+                    </div>
+                </div>
+                <div className="section">
+                    <div className="sub-section long">
+                        <div className="label">Case Timeline</div>
+                        <CaseTimeline caseDetails={caseDetails} />
                     </div>
                 </div>
                 <div className="section">
