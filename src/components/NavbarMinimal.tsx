@@ -8,6 +8,7 @@ import {
   IconSwitchHorizontal,
   IconLogout,
   IconPlus,
+  IconSearch,
 } from '@tabler/icons';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useThemeContext } from '../hooks/useThemeContext';
@@ -55,7 +56,7 @@ function NavbarLink({ icon: Icon, label, active, onClick }: NavbarLinkProps) {
 
 const mockdata = [
   { icon: IconHome2, label: 'Home', link: 'home' },
-  // { icon: IconSearch, label: 'Search' },
+  { icon: IconSearch, label: 'Search', link: 'search' },
   { icon: IconCalendarStats, label: 'Schedule', link: 'schedule' },
   { icon: IconDeviceDesktopAnalytics, label: 'Analytics', link: 'analytics' },
 ];

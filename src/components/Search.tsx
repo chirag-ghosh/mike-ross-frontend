@@ -1,34 +1,10 @@
-import { Card, createStyles, ScrollArea, TextInput } from "@mantine/core"
+import { ScrollArea, TextInput } from "@mantine/core"
 import { IconSearch } from "@tabler/icons"
 import axios from "axios";
 import React, { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "../constants";
 import debounce from "../utils/debounce";
-
-const useStyles = createStyles((theme) => ({
-    id: {
-        color: theme.colorScheme === 'dark' ? theme.colors.dark[1] : theme.colors.gray[7]
-    },
-    title: {
-        fontSize: '1.3rem',
-        fontWeight: 600
-    }
-}))
-
-function CaseItem({caseDetails}: {caseDetails: any}) {
-
-    const {classes, cx} = useStyles();
-    const navigate = useNavigate();
-
-    return(
-        <Card withBorder radius="md" className="case-item" onClick={() => navigate(caseDetails.hash)}>
-            <div className={cx(classes.id)}>#{caseDetails.diary_number}</div>
-            <div className={cx(classes.title)}>{caseDetails.petitioner[0]}</div>
-            <div>{caseDetails.category}</div>
-        </Card>
-    )
-}
+import CaseItem from "./CaseItem";
 
 function Search() {
 

@@ -1,43 +1,10 @@
-import { Card, createStyles, ScrollArea } from "@mantine/core"
+import { Card, ScrollArea } from "@mantine/core"
 import { Calendar } from "@mantine/dates"
 import axios from "axios"
 import moment from "moment"
 import React, { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
-import { toast } from "react-toastify"
 import { BACKEND_URL } from "../constants"
-
-const useStyles = createStyles((theme) => ({
-    id: {
-        color: theme.colorScheme === 'dark' ? theme.colors.dark[1] : theme.colors.gray[7]
-    },
-    title: {
-        fontSize: '1.3rem',
-        fontWeight: 600
-    }
-}))
-
-function CaseItem({caseDetails}: {caseDetails: any}) {
-
-    const {classes, cx} = useStyles();
-    const navigate = useNavigate()
-
-    const handleClick = () => {
-        const userData = localStorage.getItem('userData')
-        if(userData  && (JSON.parse(userData).categoryAccess.includes(caseDetails.category) || JSON.parse(userData).categoryAccess.includes("All categories"))) {
-            navigate(`/search/${caseDetails.hash}`)
-        }
-        else toast.error("Sorry. You don't have access to this case.")
-    }
-
-    return(
-        <Card style={{boxShadow: '4px 6px 8px #00000010'}} withBorder radius="md" className="case-item" onClick={handleClick}>
-            <div className={cx(classes.id)}>#{caseDetails.diary_number}</div>
-            <div className={cx(classes.title)}>{caseDetails.petitioner[0]}</div>
-            <div>{caseDetails.category}</div>
-        </Card>
-    )
-}
+import CaseItem from "./CaseItem"
 
 function UpcomingItem({upcomingDetails, onClick}: {upcomingDetails: {date: string, count: number}, onClick: React.MouseEventHandler<HTMLDivElement>}) {
     return(

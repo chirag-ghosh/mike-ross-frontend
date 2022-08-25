@@ -66,4 +66,18 @@
 .case-item {
     margin: 0 0.5rem 1.5rem 0.5rem;
     cursor: pointer;
+    position: relative;
+
+    .badges {
+        position: absolute;
+        right: 1rem;
+        top: 1rem;
+
+        display: flex;
+        flex-direction: column;
+
+        div:not(:last-child) {
+            margin-bottom: 1rem;
+        }
+    }
 }
