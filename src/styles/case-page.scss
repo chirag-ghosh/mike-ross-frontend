@@ -21,10 +21,16 @@
 
             .label {
                 opacity: 0.7;
+                font-weight: 500;
             }
 
             .data {
                 font-size: 1.2rem;
+            }
+
+            &.long {
+                margin: 3rem 0;
+                width: 95%;
             }
         }
     }

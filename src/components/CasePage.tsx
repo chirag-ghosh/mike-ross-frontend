@@ -3,6 +3,7 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { BACKEND_URL } from "../constants"
+import ListingTable from "./ListingTable"
 
 function CasePage() {
 
@@ -45,7 +46,7 @@ function CasePage() {
                 <div className="section">
                     <div className="sub-section">
                         <div className="label">Petitioners</div>
-                        <div className="data">{caseDetails.petitioners.join(", ")}</div>
+                        <div className="data">{caseDetails.petitioner.join(", ")}</div>
                     </div>
                     <div className="sub-section">
                         <div className="label">Respondents</div>
@@ -55,11 +56,11 @@ function CasePage() {
                 <div className="section">
                     <div className="sub-section">
                         <div className="label">Petitioner Advocates</div>
-                        <div className="data">{caseDetails.pet_advocates.join(", ")}</div>
+                        <div className="data">{caseDetails.pet_advocate.join(", ")}</div>
                     </div>
                     <div className="sub-section">
                         <div className="label">Respondent Advocates</div>
-                        <div className="data">{caseDetails.resp_advocates.join(", ")}</div>
+                        <div className="data">{caseDetails.resp_advocate.join(", ")}</div>
                     </div>
                 </div>
                 <div className="section">
@@ -70,6 +71,12 @@ function CasePage() {
                     <div className="sub-section">
                         <div className="label">Verification Date</div>
                         <div className="data">{caseDetails.verified_on}</div>
+                    </div>
+                </div>
+                <div className="section">
+                    <div className="sub-section long">
+                        <div className="label">Listing Dates</div>
+                        <ListingTable data={JSON.parse(caseDetails.listing_dates)} />
                     </div>
                 </div>
             </div>

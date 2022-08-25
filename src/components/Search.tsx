@@ -24,7 +24,7 @@ function CaseItem({caseDetails}: {caseDetails: any}) {
     return(
         <Card withBorder radius="md" className="case-item" onClick={() => navigate(caseDetails.hash)}>
             <div className={cx(classes.id)}>#{caseDetails.diary_number}</div>
-            <div className={cx(classes.title)}>{caseDetails.petitioners[0]}</div>
+            <div className={cx(classes.title)}>{caseDetails.petitioner[0]}</div>
             <div>{caseDetails.category}</div>
         </Card>
     )
