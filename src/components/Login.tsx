@@ -2,6 +2,7 @@ import { Button, Container, Paper, PasswordInput, TextInput, Title } from "@mant
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { BACKEND_URL } from "../constants";
 import { useThemeContext } from "../hooks/useThemeContext";
 
@@ -13,13 +14,16 @@ function Login() {
     const [password, setPassword] = useState("")
 
     const loginHandler = () => {
+        const toastId = toast.loading('Creating user....')
         axios.post(`${BACKEND_URL}/user/login`, {email, password})
             .then((response) => {
+                toast.update(toastId, {render: 'Successfully logged in', type: 'success', isLoading: false, closeButton: true, autoClose: 3000})
                 localStorage.setItem('isAuthenticated', 'true')
                 localStorage.setItem('userData', JSON.stringify(response.data.user))
                 navigate('/')
             })
             .catch((err) => {
+                toast.update(toastId, {render: err.response.data.status, type: 'error', isLoading: false, closeButton: true, autoClose: 3000})
                 console.log(err)
             })
     }
