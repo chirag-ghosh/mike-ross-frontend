@@ -16,7 +16,7 @@ function Login() {
         axios.post(`${BACKEND_URL}/user/login`, {email, password})
             .then((response) => {
                 localStorage.setItem('isAuthenticated', 'true')
-                localStorage.setItem('userData', response.data.user)
+                localStorage.setItem('userData', JSON.stringify(response.data.user))
                 navigate('/')
             })
             .catch((err) => {

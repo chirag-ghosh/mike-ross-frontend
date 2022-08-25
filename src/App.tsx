@@ -1,17 +1,32 @@
 import { MantineProvider } from "@mantine/core";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import Auth from "./components/Auth";
 import CasePage from "./components/CasePage";
 import Home from "./components/Home";
 import Login from "./components/Login";
 import Schedule from "./components/Schedule";
 import Search from "./components/Search";
+import Signup from "./components/Signup";
 import { useThemeContext } from "./hooks/useThemeContext";
+import 'react-toastify/dist/ReactToastify.min.css';
 
 function App() {
   const {colorMode} = useThemeContext()
   return (
     <MantineProvider theme={{colorScheme: colorMode, fontFamily: 'Poppins, sans serif'}}>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme={colorMode}
+      />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Auth><Outlet /></Auth>}>
@@ -23,9 +38,9 @@ function App() {
               <Route index element={<Search />} />
               <Route path=":hash" element={<CasePage />} />
             </Route>
+            <Route path="/signup" element={<Signup />} />
           </Route>
           <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Login />} />
         </Routes>
       </BrowserRouter>
     </MantineProvider>

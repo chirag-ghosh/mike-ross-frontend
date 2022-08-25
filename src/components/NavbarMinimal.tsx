@@ -7,6 +7,7 @@ import {
   IconCalendarStats,
   IconSwitchHorizontal,
   IconLogout,
+  IconPlus,
 } from '@tabler/icons';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useThemeContext } from '../hooks/useThemeContext';
@@ -53,11 +54,14 @@ function NavbarLink({ icon: Icon, label, active, onClick }: NavbarLinkProps) {
 }
 
 const mockdata = [
-  { icon: IconHome2, label: 'Home' },
+  { icon: IconHome2, label: 'Home', link: 'home' },
   // { icon: IconSearch, label: 'Search' },
-  { icon: IconCalendarStats, label: 'Schedule' },
-  { icon: IconDeviceDesktopAnalytics, label: 'Analytics' },
+  { icon: IconCalendarStats, label: 'Schedule', link: 'schedule' },
+  { icon: IconDeviceDesktopAnalytics, label: 'Analytics', link: 'analytics' },
 ];
+
+const userDataStr = localStorage.getItem("userData")
+if(userDataStr && JSON.parse(userDataStr).isAdmin) mockdata.push({icon: IconPlus, label: 'Add User', link: 'signup'})
 
 export function NavbarMinimal() {
   const [active, setActive] = useState(0);
@@ -73,7 +77,7 @@ export function NavbarMinimal() {
       return
     }
     mockdata.forEach((links, index) => {
-      if(links.label.toLowerCase() === initRoute) setActive(index)
+      if(links.link === initRoute) setActive(index)
     })
   }, [location.pathname])
 
@@ -82,7 +86,7 @@ export function NavbarMinimal() {
       {...link}
       key={link.label}
       active={index === active}
-      onClick={() => navigate(`/${link.label.toLowerCase()}`)}
+      onClick={() => navigate(`/${link.link}`)}
     />
   ));
 
