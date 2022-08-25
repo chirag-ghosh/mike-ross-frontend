@@ -4,6 +4,7 @@ import axios from "axios"
 import moment from "moment"
 import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
 import { BACKEND_URL } from "../constants"
 
 const useStyles = createStyles((theme) => ({
@@ -21,8 +22,16 @@ function CaseItem({caseDetails}: {caseDetails: any}) {
     const {classes, cx} = useStyles();
     const navigate = useNavigate()
 
+    const handleClick = () => {
+        const userData = localStorage.getItem('userData')
+        if(userData  && (JSON.parse(userData).categoryAccess.includes(caseDetails.category) || JSON.parse(userData).categoryAccess.includes("All categories"))) {
+            navigate(`/search/${caseDetails.hash}`)
+        }
+        else toast.error("Sorry. You don't have access to this case.")
+    }
+
     return(
-        <Card style={{boxShadow: '4px 6px 8px #00000010'}} withBorder radius="md" className="case-item" onClick={() => navigate(`/search/${caseDetails.hash}`)}>
+        <Card style={{boxShadow: '4px 6px 8px #00000010'}} withBorder radius="md" className="case-item" onClick={handleClick}>
             <div className={cx(classes.id)}>#{caseDetails.diary_number}</div>
             <div className={cx(classes.title)}>{caseDetails.petitioner[0]}</div>
             <div>{caseDetails.category}</div>
@@ -33,7 +42,7 @@ function CaseItem({caseDetails}: {caseDetails: any}) {
 function UpcomingItem({upcomingDetails, onClick}: {upcomingDetails: {date: string, count: number}, onClick: React.MouseEventHandler<HTMLDivElement>}) {
     return(
         <Card style={{boxShadow: '2px 3px 8px #00000009'}} withBorder radius="md" className="upcoming-item" onClick={onClick}>
-            {upcomingDetails.count} hearing(s) on {upcomingDetails.date}
+            <span>{upcomingDetails.count}</span> hearing(s) on {upcomingDetails.date}
         </Card>
     )
 }
