@@ -6,6 +6,7 @@ import {
   IconDeviceDesktopAnalytics,
   IconCalendarStats,
   IconSwitchHorizontal,
+  IconLogout,
 } from '@tabler/icons';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useThemeContext } from '../hooks/useThemeContext';
@@ -85,6 +86,11 @@ export function NavbarMinimal() {
     />
   ));
 
+  const logoutHandler = () => {
+    localStorage.clear()
+    navigate('/login')
+  }
+
   return (
     <Navbar width={{ base: 80 }} p="md">
       <Navbar.Section grow mt={50}>
@@ -95,6 +101,7 @@ export function NavbarMinimal() {
       <Navbar.Section>
         <Stack justify="center" spacing={0}>
           <NavbarLink icon={IconSwitchHorizontal} label="Change theme" onClick={toggleColorMode} />
+          <NavbarLink icon={IconLogout} label="Logout" onClick={logoutHandler} />
         </Stack>
       </Navbar.Section>
     </Navbar>
