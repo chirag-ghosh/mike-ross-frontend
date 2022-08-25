@@ -3,6 +3,7 @@ import { Calendar } from "@mantine/dates"
 import axios from "axios"
 import moment from "moment"
 import React, { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import { BACKEND_URL } from "../constants"
 
 const useStyles = createStyles((theme) => ({
@@ -18,9 +19,10 @@ const useStyles = createStyles((theme) => ({
 function CaseItem({caseDetails}: {caseDetails: any}) {
 
     const {classes, cx} = useStyles();
+    const navigate = useNavigate()
 
     return(
-        <Card withBorder radius="md" className="case-item">
+        <Card withBorder radius="md" className="case-item" onClick={() => navigate(`/search/${caseDetails.hash}`)}>
             <div className={cx(classes.id)}>#{caseDetails.diary_number}</div>
             <div className={cx(classes.title)}>{caseDetails.petitioner[0]}</div>
             <div>{caseDetails.category}</div>
@@ -69,6 +71,7 @@ function Schedule() {
                         className="calendar"
                         value={date}
                         onChange={setDate}
+                        minDate={new Date()}
                         styles={(theme) => ({
                             day: {fontSize: theme.fontSizes.lg, height: 60, width: 70}
                         })}

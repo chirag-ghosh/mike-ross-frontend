@@ -1,8 +1,9 @@
 import { MantineProvider } from "@mantine/core";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
+import Auth from "./components/Auth";
 import CasePage from "./components/CasePage";
 import Home from "./components/Home";
-import { NavbarMinimal } from "./components/NavbarMinimal";
+import Login from "./components/Login";
 import Schedule from "./components/Schedule";
 import Search from "./components/Search";
 import { useThemeContext } from "./hooks/useThemeContext";
@@ -12,20 +13,20 @@ function App() {
   return (
     <MantineProvider theme={{colorScheme: colorMode, fontFamily: 'Poppins, sans serif'}}>
       <BrowserRouter>
-        <div className="layout">
-          <NavbarMinimal />
-          <div className={`main-area ${colorMode}`}>
-            <Routes>
-              <Route index element={<Home />} />
-              <Route path="home" element={<Home />} />
-              <Route path="schedule" element={<Schedule />} />
-              <Route path="search">
-                <Route index element={<Search />} />
-                <Route path=":hash" element={<CasePage />} />
-              </Route>
-            </Routes>
-          </div>
-        </div>
+        <Routes>
+          <Route path="/" element={<Auth><Outlet /></Auth>}>
+            <Route index element={<Home />} />
+            <Route path="home" element={<Home />} />
+            <Route path="schedule" element={<Schedule />} />
+            <Route path="analytics" element={<Home />} />
+            <Route path="search">
+              <Route index element={<Search />} />
+              <Route path=":hash" element={<CasePage />} />
+            </Route>
+          </Route>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Login />} />
+        </Routes>
       </BrowserRouter>
     </MantineProvider>
   );
