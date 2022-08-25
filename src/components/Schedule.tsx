@@ -22,7 +22,7 @@ function CaseItem({caseDetails}: {caseDetails: any}) {
     const navigate = useNavigate()
 
     return(
-        <Card withBorder radius="md" className="case-item" onClick={() => navigate(`/search/${caseDetails.hash}`)}>
+        <Card style={{boxShadow: '4px 6px 8px #00000010'}} withBorder radius="md" className="case-item" onClick={() => navigate(`/search/${caseDetails.hash}`)}>
             <div className={cx(classes.id)}>#{caseDetails.diary_number}</div>
             <div className={cx(classes.title)}>{caseDetails.petitioner[0]}</div>
             <div>{caseDetails.category}</div>
@@ -32,7 +32,7 @@ function CaseItem({caseDetails}: {caseDetails: any}) {
 
 function UpcomingItem({upcomingDetails, onClick}: {upcomingDetails: {date: string, count: number}, onClick: React.MouseEventHandler<HTMLDivElement>}) {
     return(
-        <Card withBorder radius="md" className="upcoming-item" onClick={onClick}>
+        <Card style={{boxShadow: '2px 3px 8px #00000009'}} withBorder radius="md" className="upcoming-item" onClick={onClick}>
             {upcomingDetails.count} hearing(s) on {upcomingDetails.date}
         </Card>
     )
@@ -66,7 +66,7 @@ function Schedule() {
     return(
         <div className="schedule">
             <div className="calendar-wrapper">
-                <Card withBorder radius="md" className="calendar-card">
+                <Card style={{boxShadow: '4px 6px 8px #00000008'}} withBorder radius="md" className="calendar-card">
                     <Calendar
                         className="calendar"
                         value={date}

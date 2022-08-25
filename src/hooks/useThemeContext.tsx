@@ -39,8 +39,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   };
 
   const toggleColorMode = () => {
-    if(colorMode === 'light') rawSetColorMode('dark')
-    else rawSetColorMode('light')
+    if(colorMode === 'light') setColorMode('dark')
+    else setColorMode('light')
   }
 
   // eslint-disable-next-line
