@@ -18,6 +18,13 @@
     }
 }
 
+.filter-bar {
+    margin: 3rem 2rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
 .search-case-list {
     margin: 2rem;
     height: 80vh;
