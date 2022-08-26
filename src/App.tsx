@@ -10,6 +10,7 @@ import Signup from "./components/Signup";
 import { useThemeContext } from "./hooks/useThemeContext";
 import 'react-toastify/dist/ReactToastify.min.css';
 import Analytics from "./components/Analytics";
+import Alert from "./components/Alert";
 
 function App() {
   const {colorMode} = useThemeContext()
@@ -39,6 +40,7 @@ function App() {
               <Route path=":hash" element={<CasePage />} />
             </Route>
             <Route path="/signup" element={<Signup />} />
+            <Route path="/alert" element={<Alert />} />
           </Route>
           <Route path="/login" element={<Login />} />
         </Routes>

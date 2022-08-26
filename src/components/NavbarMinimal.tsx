@@ -8,6 +8,7 @@ import {
   IconLogout,
   IconPlus,
   IconSearch,
+  IconAlertTriangle,
 } from '@tabler/icons';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useThemeContext } from '../hooks/useThemeContext';
@@ -58,11 +59,12 @@ const mockdata = [
   { icon: IconHome2, label: 'Home', link: 'home' },
   { icon: IconSearch, label: 'Search', link: 'search' },
   { icon: IconCalendarStats, label: 'Schedule', link: 'schedule' },
-  // { icon: IconDeviceDesktopAnalytics, label: 'Analytics', link: 'analytics' },
 ];
 
-const userDataStr = localStorage.getItem("userData")
-if(userDataStr && JSON.parse(userDataStr).isAdmin) mockdata.push({icon: IconPlus, label: 'Add User', link: 'signup'})
+const adminMockdata = [...mockdata,
+  { icon: IconAlertTriangle, label: 'Alert', link: 'alert' },
+  {icon: IconPlus, label: 'Add User', link: 'signup'}
+]
 
 export function NavbarMinimal() {
   const [active, setActive] = useState(0);
@@ -71,25 +73,36 @@ export function NavbarMinimal() {
   const location = useLocation();
   const {toggleColorMode} = useThemeContext();
 
+  const userDataStr = localStorage.getItem("userData")
+
   useEffect(() => {
     const initRoute = location.pathname.split('/')[1]
     if(initRoute === '') {
       setActive(0)
       return
     }
-    mockdata.forEach((links, index) => {
+    (userDataStr && JSON.parse(userDataStr).isAdmin) ? adminMockdata.forEach((links, index) => {
+      if(links.link === initRoute) setActive(index)
+    }) : mockdata.forEach((links, index) => {
       if(links.link === initRoute) setActive(index)
     })
-  }, [location.pathname])
+  }, [location.pathname, userDataStr])
 
-  const links = mockdata.map((link, index) => (
+  const links = (userDataStr && JSON.parse(userDataStr).isAdmin) ? adminMockdata.map((link, index) => (
     <NavbarLink
       {...link}
       key={link.label}
       active={index === active}
       onClick={() => navigate(`/${link.link}`)}
     />
-  ));
+  )) : mockdata.map((link, index) => (
+    <NavbarLink
+      {...link}
+      key={link.label}
+      active={index === active}
+      onClick={() => navigate(`/${link.link}`)}
+    />
+  ))
 
   const logoutHandler = () => {
     localStorage.removeItem('isAuthenticated')
