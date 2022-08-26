@@ -1,9 +1,10 @@
-import { Center, Group, Paper, RingProgress, SimpleGrid, Text, createStyles } from "@mantine/core";
+import { Center, Group, Paper, RingProgress, SimpleGrid, Text, createStyles, Title, ScrollArea } from "@mantine/core";
 import { IconArrowDownRight, IconArrowUpRight, IconCircle1, IconCircle2, IconCircle3, TablerIcon } from "@tabler/icons";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { BACKEND_URL } from "../constants";
+import MyResponsivePie from "./MyResponsivePie";
 
 interface StatsRingProps {
     data: {
@@ -205,11 +206,25 @@ function Standings({label, data}: {label: string, data: {icon: TablerIcon, label
 
 function Analytics() {
 
+    const [totalStats, setTotalStats] = useState<any | null>(null)
     const [advocateStats, setAdvocateStats] = useState<{name: string, disposed_cases: number, pending_cases: number}[]>([])
+    const [yearwiseStats, setYearwiseStats] = useState<any | null>(null)
 
     useEffect(() => {
+        axios.get(`${BACKEND_URL}/analytics`)
+            .then((response) => setTotalStats(response.data))
+            .catch((err) => {
+                toast.error("Error occured while fetching stats.")
+                console.log(err)
+            })
         axios.get(`${BACKEND_URL}/analytics/advocate`)
             .then((response) => setAdvocateStats(response.data))
+            .catch((err) => {
+                toast.error("Error occured while fetching stats.")
+                console.log(err)
+            })
+        axios.get(`${BACKEND_URL}/analytics/yearwise`)
+            .then((response) => setYearwiseStats(response.data))
             .catch((err) => {
                 toast.error("Error occured while fetching stats.")
                 console.log(err)
@@ -220,28 +235,44 @@ function Analytics() {
     const disposedSort = [...advocateStats].sort((a, b) => b.disposed_cases - a.disposed_cases)
 
     return(
-        <div className="analytics">
-            <h2>Detailed analysis of legal cases</h2>
-            <StatsRing data={[
-                {label: 'Total disposed cases', stats: '585', progress: 79, icon: 'up', color: 'green'},
-                {label: 'Total pending cases', stats: '236', progress: 21, icon: 'down', color: 'red'},
-                {label: 'Total advocates', stats: '112', progress: 46, icon: 'up', color: 'yellow'}
-            ]} />
-            {advocateStats.length >= 3 && (
-                <div className="standings-grp">
-                    <Standings label="disposed" data={[
-                        { icon: IconCircle1, label: disposedSort[0].name, value: disposedSort[0].disposed_cases },
-                        { icon: IconCircle2, label: disposedSort[1].name, value: disposedSort[1].disposed_cases },
-                        { icon: IconCircle3, label: disposedSort[2].name, value: disposedSort[2].disposed_cases },
+        <ScrollArea>
+            <div className="analytics">
+                <h2>Detailed analysis of legal cases</h2>
+                {totalStats !== null && (
+                    <StatsRing data={[
+                        {label: 'Total disposed cases', stats: totalStats.total_disposed_cases, progress: (totalStats.total_disposed_cases/totalStats.total_cases)*100, icon: 'up', color: 'green'},
+                        {label: 'Total pending cases', stats: totalStats.total_pending_cases, progress: (totalStats.total_pending_cases/totalStats.total_cases)*100, icon: 'down', color: 'red'},
+                        {label: 'Total advocates', stats: totalStats.total_advocates, progress: 100, icon: 'up', color: 'yellow'}
                     ]} />
-                    <Standings label="pending" data={[
-                        { icon: IconCircle1, label: pendingSort[0].name, value: pendingSort[0].pending_cases },
-                        { icon: IconCircle2, label: pendingSort[1].name, value: pendingSort[1].pending_cases },
-                        { icon: IconCircle3, label: pendingSort[2].name, value: pendingSort[2].pending_cases },
-                    ]} />
-                </div>
-            )}
-        </div>
+                )}
+                {advocateStats.length >= 3 && (
+                    <div className="standings-grp">
+                        <Standings label="disposed" data={[
+                            { icon: IconCircle1, label: disposedSort[0].name, value: disposedSort[0].disposed_cases },
+                            { icon: IconCircle2, label: disposedSort[1].name, value: disposedSort[1].disposed_cases },
+                            { icon: IconCircle3, label: disposedSort[2].name, value: disposedSort[2].disposed_cases },
+                        ]} />
+                        <Standings label="pending" data={[
+                            { icon: IconCircle1, label: pendingSort[0].name, value: pendingSort[0].pending_cases },
+                            { icon: IconCircle2, label: pendingSort[1].name, value: pendingSort[1].pending_cases },
+                            { icon: IconCircle3, label: pendingSort[2].name, value: pendingSort[2].pending_cases },
+                        ]} />
+                    </div>
+                )}
+                {yearwiseStats !== null && (
+                    <div className="graph-grp">
+                        <Paper className="graph-wrap-paper" withBorder radius='xs' p='md' mt={50}>
+                            <Title align="center">Year-wise disposed cases</Title>
+                            <MyResponsivePie data={yearwiseStats.disposed} />
+                        </Paper>
+                        <Paper className="graph-wrap-paper" withBorder radius='md' p='md' mt={50}>
+                            <Title align="center">Year-wise pending cases</Title>
+                            <MyResponsivePie data={yearwiseStats.pending} />
+                        </Paper>
+                    </div>
+                )}
+            </div>
+        </ScrollArea>
     )
 }
 
