@@ -1,4 +1,4 @@
-import { Badge, ScrollArea } from "@mantine/core"
+import { Badge, Paper, ScrollArea } from "@mantine/core"
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
@@ -10,6 +10,7 @@ import ListingTable from "./ListingTable"
 function CasePage() {
 
     const [caseDetails, setCaseDetails] = useState<any>()
+    const [recommendedLawyers, setRecommendedLawyers] = useState<any[]>([])
 
     const params = useParams()
 
@@ -18,6 +19,14 @@ function CasePage() {
             .then((response) => setCaseDetails(response.data.caseDetail))
             .catch((err) => console.log(err))
     }, [params.hash])
+
+    useEffect(() => {
+        if(caseDetails !== undefined) {
+            axios.get(`${BACKEND_URL}/analytics/recommendation?category=${caseDetails.category}`)
+                .then((response) => setRecommendedLawyers(response.data))
+                .catch((err) => console.log(err))
+        }
+    }, [caseDetails])
 
     if(caseDetails === undefined) return(<div>Loading...</div>)
 
@@ -46,9 +55,18 @@ function CasePage() {
                     </div>
                 </div>
                 <div className="section">
-                    <div className="sub-section long">
+                    <div className="sub-section">
                         <div className="label">Case Timeline</div>
                         <CaseTimeline caseDetails={caseDetails} />
+                    </div>
+                    <div className="sub-section">
+                        <div className="label">Advocate Recommendation</div>
+                        <div>
+                            {recommendedLawyers.slice(0, 3).map((lawyer) => (<Paper className="recommendation" withBorder radius='md' p='md' mt={30}>
+                                <h3>{lawyer.name}</h3>
+                                <Badge ml={10} radius='sm' size="xl" color='red'>{lawyer.value} disposed</Badge>
+                            </Paper>))}
+                        </div>
                     </div>
                 </div>
                 <div className="section">
