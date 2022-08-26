@@ -214,6 +214,7 @@ function Analytics() {
     const [advocateStats, setAdvocateStats] = useState<{name: string, disposed_cases: number, pending_cases: number}[]>([])
     const [yearwiseStats, setYearwiseStats] = useState<any | null>(null)
     const [categorywiseStats, setCategorywiseStats] = useState<any | null>(null)
+    const [judgement, setJudgement] = useState<any | null>(null)
 
     useEffect(() => {
         axios.get(`${BACKEND_URL}/analytics`)
@@ -240,6 +241,12 @@ function Analytics() {
                 toast.error("Error occured while fetching stats.")
                 console.log(err)
             })
+        axios.get(`${BACKEND_URL}/analytics/judgement`)
+            .then((response) => setJudgement(response.data))
+            .catch((err) => {
+                toast.error("Error occured while fetching stats.")
+                console.log(err)
+            })
     }, [])
 
     const pendingSort = [...advocateStats].sort((a, b) => b.pending_cases - a.pending_cases)
@@ -255,6 +262,15 @@ function Analytics() {
           pending: yearwiseStats.pending[2022-i].value,
           total: yearwiseStats.disposed[2022-i].value + yearwiseStats.pending[2022-i].value
         })
+      }
+    }
+
+    let winCount = 0, lossCount = 0;
+    if(judgement !== null) {
+      const data = Array.from(Object.values(judgement))
+      for(i = 0; i < data.length; i++) {
+        if(data[i] === 0) winCount++
+        else lossCount++
       }
     }
 
@@ -324,6 +340,17 @@ function Analytics() {
                             <MyResponsivePie data={categorywiseStats.pending} />
                         </Paper>
                     </div>
+                )}
+                {judgement !== null && (
+                  <Paper className="graph-wrap-paper long" withBorder radius='md' p='md' mt={50}>
+                    <Title align="center">Win/Loss</Title>
+                    <MyResponsivePie 
+                      data={[
+                        {id: "Win", label: "Win", value: winCount},
+                        {id: "Loss", label: "Loss", value: lossCount},
+                      ]}
+                    />
+                </Paper>
                 )}
                 <h2 className="india-title">Statewise distribution of legal cases</h2>
                 <IndiaMap />
