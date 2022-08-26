@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { BACKEND_URL } from "../constants";
 import MyResponsiveBar from "./MyResponsiveBar";
 import MyResponsivePie from "./MyResponsivePie";
+import MyResponsiveRadar from "./MyResponsiveRadar";
 
 interface StatsRingProps {
     data: {
@@ -242,6 +243,19 @@ function Analytics() {
     const pendingSort = [...advocateStats].sort((a, b) => b.pending_cases - a.pending_cases)
     const disposedSort = [...advocateStats].sort((a, b) => b.disposed_cases - a.disposed_cases)
 
+    let yearwiseRadarData = null;
+    if(yearwiseStats !== null) {
+      yearwiseRadarData = []
+      for(var i = 2018; i <= 2022; i++) {
+        yearwiseRadarData.push({
+          year: i,
+          disposed: yearwiseStats.disposed[2022-i].value,
+          pending: yearwiseStats.pending[2022-i].value,
+          total: yearwiseStats.disposed[2022-i].value + yearwiseStats.pending[2022-i].value
+        })
+      }
+    }
+
     return(
         <ScrollArea>
             <div className="analytics">
@@ -271,7 +285,13 @@ function Analytics() {
                   <Paper className="graph-wrap-paper long" withBorder radius='xs' p='md' mt={50}>
                     <Title align="center">Lawyer Performance</Title>
                     <MyResponsiveBar data={disposedSort.slice(0, 10)} />
-                </Paper>
+                  </Paper>
+                )}
+                {yearwiseRadarData !== null && (
+                  <Paper className="graph-wrap-paper long" withBorder radius='xs' p='md' mt={50}>
+                    <Title align="center">Yearwise Case Performance</Title>
+                    <MyResponsiveRadar data={yearwiseRadarData} />
+                  </Paper>
                 )}
                 {yearwiseStats !== null && (
                     <div className="graph-grp">
