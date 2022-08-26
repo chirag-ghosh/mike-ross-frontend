@@ -10,6 +10,7 @@ import Search from "./components/Search";
 import Signup from "./components/Signup";
 import { useThemeContext } from "./hooks/useThemeContext";
 import 'react-toastify/dist/ReactToastify.min.css';
+import Analytics from "./components/Analytics";
 
 function App() {
   const {colorMode} = useThemeContext()
@@ -33,7 +34,7 @@ function App() {
             <Route index element={<Home />} />
             <Route path="home" element={<Home />} />
             <Route path="schedule" element={<Schedule />} />
-            <Route path="analytics" element={<Home />} />
+            <Route path="analytics" element={<Analytics />} />
             <Route path="search">
               <Route index element={<Search />} />
               <Route path=":hash" element={<CasePage />} />

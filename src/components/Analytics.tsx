@@ -1,0 +1,248 @@
+import { Center, Group, Paper, RingProgress, SimpleGrid, Text, createStyles } from "@mantine/core";
+import { IconArrowDownRight, IconArrowUpRight, IconCircle1, IconCircle2, IconCircle3, TablerIcon } from "@tabler/icons";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { BACKEND_URL } from "../constants";
+
+interface StatsRingProps {
+    data: {
+      label: string;
+      stats: string;
+      progress: number;
+      color: string;
+      icon: 'up' | 'down';
+    }[];
+}
+
+const icons = {
+    up: IconArrowUpRight,
+    down: IconArrowDownRight,
+};
+
+export function StatsRing({ data }: StatsRingProps) {
+    const stats = data.map((stat) => {
+      const Icon = icons[stat.icon];
+      return (
+        <Paper withBorder radius="md" p="xs" key={stat.label}>
+          <Group>
+            <RingProgress
+              size={80}
+              roundCaps
+              thickness={8}
+              sections={[{ value: stat.progress, color: stat.color }]}
+              label={
+                <Center>
+                  <Icon size={22} stroke={1.5} />
+                </Center>
+              }
+            />
+  
+            <div>
+              <Text color="dimmed" size="xs" transform="uppercase" weight={700}>
+                {stat.label}
+              </Text>
+              <Text weight={700} size="xl">
+                {stat.stats}
+              </Text>
+            </div>
+          </Group>
+        </Paper>
+      );
+    });
+    return (
+      <SimpleGrid mt={30} cols={3} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
+        {stats}
+      </SimpleGrid>
+    );
+}
+
+const useStyles = createStyles((theme) => ({
+    root: {
+      backgroundImage: `linear-gradient(-60deg, ${theme.colors[theme.primaryColor][4]} 0%, ${
+        theme.colors[theme.primaryColor][7]
+      } 100%)`,
+      padding: theme.spacing.xl,
+      borderRadius: theme.radius.md,
+      display: 'flex',
+  
+      [theme.fn.smallerThan('xs')]: {
+        flexDirection: 'column',
+      },
+    },
+  
+    icon: {
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      marginTop: theme.spacing.lg,
+      color: theme.colors[theme.primaryColor][6],
+    },
+  
+    stat: {
+      minWidth: 98,
+      paddingTop: theme.spacing.xl,
+      minHeight: 140,
+      display: 'flex',
+      flex: 1,
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+      backgroundColor: theme.white,
+    },
+  
+    label: {
+      textTransform: 'uppercase',
+      fontWeight: 700,
+      fontSize: theme.fontSizes.xs,
+      fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+      color: theme.colors.gray[6],
+      lineHeight: 1.2,
+    },
+  
+    value: {
+      fontSize: theme.fontSizes.sm,
+      fontWeight: 700,
+      color: theme.black,
+    },
+  
+    count: {
+      color: theme.colors.gray[6],
+    },
+  
+    day: {
+      fontSize: 44,
+      fontWeight: 700,
+      color: theme.white,
+      lineHeight: 1,
+      textAlign: 'center',
+      marginBottom: 5,
+      fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+    },
+  
+    month: {
+      fontSize: theme.fontSizes.sm,
+      color: theme.white,
+      lineHeight: 1,
+      marginBottom: 5,
+      textAlign: 'center',
+    },
+  
+    controls: {
+      display: 'flex',
+      flexDirection: 'column',
+      marginRight: theme.spacing.xl * 2,
+  
+      [theme.fn.smallerThan('xs')]: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginRight: 0,
+        marginBottom: theme.spacing.xl,
+      },
+    },
+  
+    date: {
+      flex: 1,
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+    },
+  
+    control: {
+      height: 28,
+      width: '100%',
+      color: theme.colors[theme.primaryColor][2],
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: theme.radius.md,
+      transition: 'background-color 50ms ease',
+  
+      [theme.fn.smallerThan('xs')]: {
+        height: 34,
+        width: 34,
+      },
+  
+      '&:hover': {
+        backgroundColor: theme.colors[theme.primaryColor][5],
+        color: theme.white,
+      },
+    },
+  
+    controlIcon: {
+      [theme.fn.smallerThan('xs')]: {
+        transform: 'rotate(-90deg)',
+      },
+    },
+}));
+
+function Standings({label, data}: {label: string, data: {icon: TablerIcon, label: string, value: number}[]}) {
+    const { classes } = useStyles();
+
+    const stats = data.map((stat) => (
+        <Paper className={classes.stat} radius="md" shadow="md" p="xs" key={stat.label}>
+          <stat.icon size={45} className={classes.icon} stroke={1.5} />
+          <div>
+            <Text className={classes.label}>{stat.label}</Text>
+            <Text size="xs" className={classes.count}>
+              <span className={classes.value}>{stat.value} cases</span>
+            </Text>
+          </div>
+        </Paper>
+    ));
+
+    return(
+        <div className={classes.root}>
+            <div className={classes.controls}>
+                <div className={classes.date}>
+                <Text className={classes.month}>Lawyers with most</Text>
+                <Text className={classes.day}>{label.toUpperCase()}</Text>
+                <Text className={classes.month}>cases</Text>
+                </div>
+            </div>
+            <Group sx={{ flex: 1 }}>{stats}</Group>
+        </div>
+    )
+}
+
+function Analytics() {
+
+    const [advocateStats, setAdvocateStats] = useState<{name: string, disposed_cases: number, pending_cases: number}[]>([])
+
+    useEffect(() => {
+        axios.get(`${BACKEND_URL}/analytics/advocate`)
+            .then((response) => setAdvocateStats(response.data))
+            .catch((err) => {
+                toast.error("Error occured while fetching stats.")
+                console.log(err)
+            })
+    }, [])
+
+    const pendingSort = [...advocateStats].sort((a, b) => b.pending_cases - a.pending_cases)
+    const disposedSort = [...advocateStats].sort((a, b) => b.disposed_cases - a.disposed_cases)
+
+    return(
+        <div className="analytics">
+            <h2>Detailed analysis of legal cases</h2>
+            <StatsRing data={[
+                {label: 'Total disposed cases', stats: '585', progress: 79, icon: 'up', color: 'green'},
+                {label: 'Total pending cases', stats: '236', progress: 21, icon: 'down', color: 'red'},
+                {label: 'Total advocates', stats: '112', progress: 46, icon: 'up', color: 'yellow'}
+            ]} />
+            {advocateStats.length >= 3 && (
+                <div className="standings-grp">
+                    <Standings label="disposed" data={[
+                        { icon: IconCircle1, label: disposedSort[0].name, value: disposedSort[0].disposed_cases },
+                        { icon: IconCircle2, label: disposedSort[1].name, value: disposedSort[1].disposed_cases },
+                        { icon: IconCircle3, label: disposedSort[2].name, value: disposedSort[2].disposed_cases },
+                    ]} />
+                    <Standings label="pending" data={[
+                        { icon: IconCircle1, label: pendingSort[0].name, value: pendingSort[0].pending_cases },
+                        { icon: IconCircle2, label: pendingSort[1].name, value: pendingSort[1].pending_cases },
+                        { icon: IconCircle3, label: pendingSort[2].name, value: pendingSort[2].pending_cases },
+                    ]} />
+                </div>
+            )}
+        </div>
+    )
+}
+
+export default Analytics
