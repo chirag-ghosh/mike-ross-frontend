@@ -244,7 +244,7 @@ function Analytics() {
     return(
         <ScrollArea>
             <div className="analytics">
-                <h2>Detailed analysis of legal cases</h2>
+                <h2>Legality Management System</h2>
                 {totalStats !== null && (
                     <StatsRing data={[
                         {label: 'Total disposed cases', stats: totalStats.total_disposed_cases, progress: (totalStats.total_disposed_cases/totalStats.total_cases)*100, icon: 'up', color: 'green'},

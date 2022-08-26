@@ -3,7 +3,6 @@ import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import Auth from "./components/Auth";
 import CasePage from "./components/CasePage";
-import Home from "./components/Home";
 import Login from "./components/Login";
 import Schedule from "./components/Schedule";
 import Search from "./components/Search";
@@ -31,8 +30,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Auth><Outlet /></Auth>}>
-            <Route index element={<Home />} />
-            <Route path="home" element={<Home />} />
+            <Route index element={<Analytics />} />
+            <Route path="home" element={<Analytics />} />
             <Route path="schedule" element={<Schedule />} />
             <Route path="analytics" element={<Analytics />} />
             <Route path="search">

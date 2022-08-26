@@ -3,7 +3,6 @@ import { Navbar, Tooltip, UnstyledButton, createStyles, Stack } from '@mantine/c
 import {
   TablerIcon,
   IconHome2,
-  IconDeviceDesktopAnalytics,
   IconCalendarStats,
   IconSwitchHorizontal,
   IconLogout,
@@ -58,7 +57,7 @@ const mockdata = [
   { icon: IconHome2, label: 'Home', link: 'home' },
   { icon: IconSearch, label: 'Search', link: 'search' },
   { icon: IconCalendarStats, label: 'Schedule', link: 'schedule' },
-  { icon: IconDeviceDesktopAnalytics, label: 'Analytics', link: 'analytics' },
+  // { icon: IconDeviceDesktopAnalytics, label: 'Analytics', link: 'analytics' },
 ];
 
 const userDataStr = localStorage.getItem("userData")
@@ -92,7 +91,8 @@ export function NavbarMinimal() {
   ));
 
   const logoutHandler = () => {
-    localStorage.clear()
+    localStorage.removeItem('isAuthenticated')
+    localStorage.removeItem('userData')
     navigate('/login')
   }
 

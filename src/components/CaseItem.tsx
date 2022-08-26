@@ -28,7 +28,7 @@ function CaseItem({caseDetails}: {caseDetails: any}) {
 
     return(
         <Card p={30} style={{boxShadow: '4px 6px 8px #00000010'}} withBorder radius="md" className="case-item" onClick={handleClick}>
-            <div className={cx(classes.id)}>#{caseDetails.diary_number}</div>
+            <Badge radius='sm' size="xl" color='red'>#{caseDetails.diary_number}</Badge>
             <div className={cx(classes.title)}>{caseDetails.petitioner[0]}</div>
             <div className="badges">
                 <Badge radius='sm' size="xl">{caseDetails.category}</Badge>
