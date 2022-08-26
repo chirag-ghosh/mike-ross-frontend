@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Navbar, Tooltip, UnstyledButton, createStyles, Stack } from '@mantine/core';
+import { Navbar, Tooltip, UnstyledButton, createStyles, Stack, Center, Image } from '@mantine/core';
 import {
   TablerIcon,
   IconHome2,
@@ -11,6 +11,7 @@ import {
 } from '@tabler/icons';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useThemeContext } from '../hooks/useThemeContext';
+import ugcLogo from './ugc.png'
 
 const useStyles = createStyles((theme) => ({
   link: {
@@ -98,6 +99,9 @@ export function NavbarMinimal() {
 
   return (
     <Navbar width={{ base: 80 }} p="md">
+      <Center>
+        <Image src={ugcLogo} />
+      </Center>
       <Navbar.Section grow mt={50}>
         <Stack justify="center" spacing={0}>
           {links}
