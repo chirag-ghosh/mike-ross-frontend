@@ -115,6 +115,18 @@ function CasePage() {
                         <ListingTable data={JSON.parse(caseDetails.listing_dates)} />
                     </div>
                 </div>
+                <div className="section">
+                    <div className="sub-section long">
+                        <div className="label">Judgements and Orders</div>
+                        <div className="judgement-grp">
+                            {Object.keys(JSON.parse(caseDetails.judgement)).map((key) => {
+                                return(
+                                    <a className="judgement-link" target='_blank' rel="noreferrer" href={JSON.parse(caseDetails.judgement)[key]}><Badge radius='sm' size="xl">{key}</Badge></a>
+                                )
+                            })}
+                        </div>
+                    </div>
+                </div>
             </div>
         </ScrollArea>
     )
