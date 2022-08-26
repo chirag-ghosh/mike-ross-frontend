@@ -4,6 +4,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { BACKEND_URL } from "../constants";
+import IndiaMap from "./IndiaMap";
 import MyResponsiveBar from "./MyResponsiveBar";
 import MyResponsiveBarCase from "./MyResponsiveBarCase";
 import MyResponsivePie from "./MyResponsivePie";
@@ -324,6 +325,8 @@ function Analytics() {
                         </Paper>
                     </div>
                 )}
+                <h2 className="india-title">Statewise distribution of legal cases</h2>
+                <IndiaMap />
             </div>
         </ScrollArea>
     )
