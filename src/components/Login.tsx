@@ -14,7 +14,7 @@ function Login() {
     const [password, setPassword] = useState("")
 
     const loginHandler = () => {
-        const toastId = toast.loading('Creating user....')
+        const toastId = toast.loading('Loading user....')
         axios.post(`${BACKEND_URL}/user/login`, {email, password})
             .then((response) => {
                 toast.update(toastId, {render: 'Successfully logged in', type: 'success', isLoading: false, closeButton: true, autoClose: 3000})
@@ -30,14 +30,15 @@ function Login() {
 
     return (
         <div className={`login ${colorMode}`}>
-            <Container size={420}>
             <Title
+                color='white'
                 align="center"
+                style={{filter: 'drop-shadow(4px 6px 8px #00000044)'}}
                 sx={(theme) => ({ fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900 })}
             >
-                Welcome!
+                Welcome to UGC Legal Management System
             </Title>
-        
+            <Container size={500} style={{filter: 'drop-shadow(4px 6px 8px #00000044)'}}>        
             <Paper withBorder shadow="md" p={30} mt={30} radius="md">
                 <TextInput value={email} onChange={(e) => setEmail(e.target.value)} label="Email" placeholder="Your email" required />
                 <PasswordInput value={password} onChange={(e) => setPassword(e.target.value)} label="Password" placeholder="Your password" required mt="md" />

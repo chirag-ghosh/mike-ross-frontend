@@ -19,25 +19,40 @@ function Schedule() {
     const [cases, setCases] = useState<any[]>([])
     const [upcoming, setUpcoming] = useState<any[]>([])
 
+    const userData = localStorage.getItem('userData')
+
     useEffect(() => {
-        axios.get(`${BACKEND_URL}/case/upcoming`)
-            .then((response) => {
-                setUpcoming(response.data.data)
-            })
-            .catch((err) => {
-                console.log(err)
-            })
-    }, [])
+        if(userData && !JSON.parse(userData).categoryAccess.includes('All categories')) {
+            axios.get(`${BACKEND_URL}/case/upcoming?category=${JSON.parse(userData).categoryAccess.join('---')}`)
+                .then((response) => {
+                    setUpcoming(response.data.data)
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+        }
+        else {
+            axios.get(`${BACKEND_URL}/case/upcoming`)
+                .then((response) => {
+                    setUpcoming(response.data.data)
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+        }
+    }, [userData])
 
     useEffect(() => {
         axios.get(`${BACKEND_URL}/case?date=${moment(date).format("DD-MM-YYYY")}`)
             .then((response) => {
-                setCases(response.data.cases)
+                setCases(response.data.cases.filter((caseDetail: any) => {
+                    return userData === null || (userData !== null && JSON.parse(userData).categoryAccess.includes('All categories')) ? true : JSON.parse(userData).categoryAccess.includes(caseDetail.category)
+                }))
             })
             .catch((err) => {
                 console.log(err)
             })
-    }, [date])
+    }, [date, userData])
 
     return(
         <div className="schedule">

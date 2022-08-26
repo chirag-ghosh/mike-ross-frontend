@@ -15,6 +15,7 @@ function Search() {
     const [query, setQuery] = useState("")
     const [cases, setCases] = useState<any[]>([])
     const [status, setStatus] = useState<string>('any')
+    const [filteredCategories, setFilteredCategories] = useState<string[]>(categories)
     const [category, setCategory] = useState<string>('All categories')
     const [year, setYear] = useState<string>('Any year')
 
@@ -23,6 +24,14 @@ function Search() {
             .then((response) => setCases(response.data.hits))
             .catch((err) => console.log(err))
     }, [query, status, category, year])
+
+    useEffect(() => {
+        const userData = localStorage.getItem('userData')
+        if(userData  && !JSON.parse(userData).categoryAccess.includes("All categories")) {
+            setFilteredCategories(JSON.parse(userData).categoryAccess)
+            setCategory(JSON.parse(userData).categoryAccess[0])
+        }
+    }, [])
 
     const handleChange = debounce((e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value))
 
@@ -39,7 +48,7 @@ function Search() {
                     nothingFound="No options"
                     value={category}
                     onChange={(value) => value === null ? setCategory('All categories') : setCategory(value)}
-                    data={categories}
+                    data={filteredCategories}
                 />
                 <SegmentedControl
                     color='blue'
