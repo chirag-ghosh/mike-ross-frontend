@@ -8,6 +8,7 @@
     "@mantine/dates": "^5.2.3",
     "@mantine/hooks": "^5.2.3",
     "@mantine/notifications": "^5.2.3",
+    "@nivo/bar": "^0.79.1",
     "@nivo/core": "^0.79.0",
     "@nivo/pie": "^0.79.1",
     "@tabler/icons": "^1.86.0",

@@ -32,4 +32,8 @@
 
 .graph-wrap-paper {
     width: 40%;
+
+    &.long {
+        width: 100%;
+    }
 }

@@ -4,6 +4,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { BACKEND_URL } from "../constants";
+import MyResponsiveBar from "./MyResponsiveBar";
 import MyResponsivePie from "./MyResponsivePie";
 
 interface StatsRingProps {
@@ -265,6 +266,12 @@ function Analytics() {
                             { icon: IconCircle3, label: pendingSort[2].name, value: pendingSort[2].pending_cases },
                         ]} />
                     </div>
+                )}
+                {advocateStats.length > 0 && (
+                  <Paper className="graph-wrap-paper long" withBorder radius='xs' p='md' mt={50}>
+                    <Title align="center">Lawyer Performance</Title>
+                    <MyResponsiveBar data={disposedSort.slice(0, 10)} />
+                </Paper>
                 )}
                 {yearwiseStats !== null && (
                     <div className="graph-grp">
