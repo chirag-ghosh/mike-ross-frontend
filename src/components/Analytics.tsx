@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { BACKEND_URL } from "../constants";
 import MyResponsiveBar from "./MyResponsiveBar";
+import MyResponsiveBarCase from "./MyResponsiveBarCase";
 import MyResponsivePie from "./MyResponsivePie";
 import MyResponsiveRadar from "./MyResponsiveRadar";
 
@@ -259,7 +260,7 @@ function Analytics() {
     return(
         <ScrollArea>
             <div className="analytics">
-                <h2>Legality Management System</h2>
+                <h2>Legal Management System</h2>
                 {totalStats !== null && (
                     <StatsRing data={[
                         {label: 'Total disposed cases', stats: totalStats.total_disposed_cases, progress: (totalStats.total_disposed_cases/totalStats.total_cases)*100, icon: 'up', color: 'green'},
@@ -288,10 +289,16 @@ function Analytics() {
                   </Paper>
                 )}
                 {yearwiseRadarData !== null && (
-                  <Paper className="graph-wrap-paper long" withBorder radius='xs' p='md' mt={50}>
-                    <Title align="center">Yearwise Case Performance</Title>
-                    <MyResponsiveRadar data={yearwiseRadarData} />
-                  </Paper>
+                  <div className="graph-grp">
+                      <Paper className="graph-wrap-paper long" withBorder radius='xs' p='md' mt={50}>
+                        <Title align="center">Yearwise Case Performance</Title>
+                        <MyResponsiveRadar data={yearwiseRadarData} />
+                      </Paper>
+                      <Paper className="graph-wrap-paper long" withBorder radius='xs' p='md' mt={50}>
+                        <Title align="center">Yearwise Case Performance</Title>
+                        <MyResponsiveBarCase data={yearwiseRadarData} />
+                      </Paper>
+                  </div>
                 )}
                 {yearwiseStats !== null && (
                     <div className="graph-grp">
