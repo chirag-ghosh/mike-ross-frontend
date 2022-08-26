@@ -209,6 +209,7 @@ function Analytics() {
     const [totalStats, setTotalStats] = useState<any | null>(null)
     const [advocateStats, setAdvocateStats] = useState<{name: string, disposed_cases: number, pending_cases: number}[]>([])
     const [yearwiseStats, setYearwiseStats] = useState<any | null>(null)
+    const [categorywiseStats, setCategorywiseStats] = useState<any | null>(null)
 
     useEffect(() => {
         axios.get(`${BACKEND_URL}/analytics`)
@@ -225,6 +226,12 @@ function Analytics() {
             })
         axios.get(`${BACKEND_URL}/analytics/yearwise`)
             .then((response) => setYearwiseStats(response.data))
+            .catch((err) => {
+                toast.error("Error occured while fetching stats.")
+                console.log(err)
+            })
+        axios.get(`${BACKEND_URL}/analytics/categorywise`)
+            .then((response) => setCategorywiseStats(response.data))
             .catch((err) => {
                 toast.error("Error occured while fetching stats.")
                 console.log(err)
@@ -268,6 +275,18 @@ function Analytics() {
                         <Paper className="graph-wrap-paper" withBorder radius='md' p='md' mt={50}>
                             <Title align="center">Year-wise pending cases</Title>
                             <MyResponsivePie data={yearwiseStats.pending} />
+                        </Paper>
+                    </div>
+                )}
+                {categorywiseStats !== null && (
+                    <div className="graph-grp">
+                        <Paper className="graph-wrap-paper" withBorder radius='xs' p='md' mt={50}>
+                            <Title align="center">Category-wise disposed cases</Title>
+                            <MyResponsivePie data={categorywiseStats.disposed} />
+                        </Paper>
+                        <Paper className="graph-wrap-paper" withBorder radius='md' p='md' mt={50}>
+                            <Title align="center">Category-wise pending cases</Title>
+                            <MyResponsivePie data={categorywiseStats.pending} />
                         </Paper>
                     </div>
                 )}
